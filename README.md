@@ -4,3 +4,5 @@ Web-based financial management app that tracks monthly spending. The user can se
 
 ## Notes
 1. Followed a [Python Tutorial](https://www.youtube.com/watch?v=dam0GPOAvVI&ab_channel=TechWithTim) to build the base web-page and then adapted it for our design.
+2. To run the webpage **locally**, cd into the EasyMoney directory (outermost), and run "python3 main.py". You must install the following packages before running the program: flask, flask-login, flask-sqlalchemy
+
