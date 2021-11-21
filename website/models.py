@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
 
 class Portfolio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    monthly_income = db.Column(db.Float, default=0.0)
-    savings_percent = db.Column(db.Float, default=0.0)
-    subscription_total = db.Column(db.Float, default=0.0)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
+    monthly_income = db.Column(db.Float)
+    savings_percent = db.Column(db.Float)
+    subscription_total = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

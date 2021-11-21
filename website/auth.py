@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User 
+from .models import User, Portfolio
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -56,10 +56,14 @@ def register():
         elif len(password1) < 8:
             flash('Password must be at least 8 char', category='error')
         else:
-            # Add user to database.
+            # Add user + user's default portfolio to database.
             new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
+            id = db.session.query(User).filter_by(email=email).first().id
+            new_portfolio = Portfolio(monthly_income=0.0, savings_percent=0.0, subscription_total=0.0, user_id=id)
+            db.session.add(new_portfolio)
             db.session.commit() # Update database.
+
             login_user(new_user, remember=True)
             flash('Account created!', category='success') 
             return redirect(url_for('views.home'))

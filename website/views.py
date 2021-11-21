@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
-from website.models import Transaction
+from website.models import Transaction, Portfolio
 from . import db, constant
 from sqlalchemy import desc
 import datetime
@@ -17,7 +17,15 @@ def home():
 @views.route('/portfolio')
 @login_required
 def portfolio():
-    return render_template('portfolio.html', user=current_user)
+    query = db.session.query(Portfolio).filter_by(user_id=current_user.id).first()
+    monthly_income = float(query.monthly_income)
+    savings_percent = float(query.savings_percent)
+    subscription_total = float(query.subscription_total)
+    
+    return render_template('portfolio.html', user=current_user, 
+        monthly_income=monthly_income, 
+        savings_percent=savings_percent,
+        subscription_total=subscription_total)
 
 @views.route('/add', methods=['GET', 'POST'])
 @login_required
