@@ -3,4 +3,24 @@
 
 {% block content %}
     <h1>This is the home page.</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-info">
+                <th scope="col">Date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Item</th>
+                <th scope="col">Price (CAD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <th scope="row">{{ transaction.date }}</td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.item }}</td>
+                    <td>{{ transaction.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

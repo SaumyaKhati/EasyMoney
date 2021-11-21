@@ -3,8 +3,10 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
+import re
 
 auth = Blueprint('auth', __name__)
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,6 +47,8 @@ def register():
             flash('Email already exists.', category='error')
         elif len(email) < 3:
             flash('Email must be >= 3 characters', category='error')
+        elif not re.fullmatch(regex, email):
+            flash('Email is not valid.', category='error')
         elif len(username) < 2:
             flash('Username must be  >= 2 char', category='error')
         elif password1 != password2:

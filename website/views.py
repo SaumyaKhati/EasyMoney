@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
-
 from website.models import Transaction
 from . import db, constant
+from sqlalchemy import desc
 import datetime
 
 views = Blueprint('views', __name__)
@@ -11,7 +11,8 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required
 def home():
-    return render_template("home.html", user=current_user)
+    transactions = db.session.query(Transaction).filter_by(user_id=current_user.id).order_by(desc(Transaction.date))
+    return render_template("home.html", user=current_user, transactions=transactions)
 
 @views.route('/add', methods=['GET', 'POST'])
 @login_required
@@ -21,7 +22,7 @@ def add_item():
         category = request.form.get('category')
         item = request.form.get('item')
         price = request.form.get('price')
-        error = 0
+        error = False
 
         # Validate Input. 
         try:
@@ -44,8 +45,10 @@ def add_item():
             error = True
         
         if not error:
-            entry = Transaction(date=date, category=category, item=item, price=price, user_id=current_user.id)
+            flash('Transaction added!', category='success')
+            entry = Transaction(date=date, category=category, item=item, price=(price * 1.00), user_id=current_user.id)
             db.session.add(entry)
             db.session.commit()
+
     return render_template('add_item.html', user=current_user, categories=constant.ACCEPTED_CATEGORIES)
 
