@@ -17,4 +17,4 @@ class User(db.Model, UserMixin):
     # Video related.
     notes = db.relationship('Note')
 
-    # Other unique things for our financial app. 
+    # Other unique things for our financial app. 2
