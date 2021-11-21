@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Transactions</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-info">
+                <th scope="col">Date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Item</th>
+                <th scope="col">Price (CAD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <th scope="row">{{ transaction.date }}</th>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.item }}</td>
+                    <td>{{ transaction.price * 1.0 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+
+    <h2 class="text-center">How are you doing so far?</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-warning">
+                <th scope="col">General Category</th>
+                <th scope="col">Value (CAD)</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>Total Spending (Transactions + Subscriptions)</td>
+                    <td>{{ total_spending }}</td>
+                </tr>
+                <tr>
+                    <td>Highest Category Spending Wise</td>
+                    <td>{{ max_spending_category }}</td>
+                </tr>
+                <tr>
+                    <td>Monthly Savings</td>
+                    <td>{{ savings }}</td>
+                </tr>
+                <tr class="table-danger">
+                    <td>Spending Budget Left</td>
+                    <td>{{ budget_left }}</td>
+                </tr>
+        </tbody>
+    </table>
+    <br />
+    <h2 class="text-center">Total Spending in Each Category</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-warning">
+                <th scope="col">Category</th>
+                <th scope="col">Total Purchases (CAD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dict in total_spending_per_category_list %}
+                <tr>
+                    <td>{{ dict['category'] }}</td>
+                    <td>{{ dict['total_spending'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

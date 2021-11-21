@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Update Portfolio{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <h3 align="center">Update Portfolio</h3>
+        <div class="form-group">
+            <label for="monthly_income">Monthly Income</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="monthly_income" 
+                name="monthly_income" 
+                placeholder="Enter a numeric value > 0.0 or leave it blank"
+            />
+        </div>
+        <div class="form-group">
+            <label for="savings_percent">Savings Percentage</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="savings_percent" 
+                name="savings_percent" 
+                placeholder="Enter a numeric value > 0.0 or leave it blank"
+            />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Save Portfolio</button>
+    </form>
+{% endblock %}

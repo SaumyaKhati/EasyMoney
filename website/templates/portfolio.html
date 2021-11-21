@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Your Portfolio</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">Category</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Monthly Income</td>
+                <td>{{ monthly_income }}</td>
+            </tr>
+            <tr>
+                <td>Savings Percentage</td>
+                <td>{{ savings_percent }}</td>
+            </tr>
+            {% if subscription_total != 0%}
+                <tr class="table-warning">
+                    <th scope="col">Subscriptions</th>
+                    <th scope="col">Cost</th>
+                </tr>
+                {% for subs in subscriptions %}
+                    <tr>
+                        <td>{{ subs.item }}</td>
+                        <td>{{ subs.price }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="table-danger">
+                    <td>Total Subscriptions</td>
+                    <td>{{ subscription_total }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <br />
+    <a href="/portfolio/update" type="update" class="btn btn-primary">Update Portfolio</a>
+{% endblock %}
