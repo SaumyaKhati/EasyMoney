@@ -21,31 +21,31 @@ def add_item():
         category = request.form.get('category')
         item = request.form.get('item')
         price = request.form.get('price')
-        
+        error = 0
+
         # Validate Input. 
         try:
             datetime.datetime.strptime(date, "%Y-%m-%d")
         except:
             flash('Invalid date format!', category='error')
-           
-        if not category in constant.ACCEPTED_CATEGORIES:
-            flash('Invalid category!', category='error')
+        if category == "Choose...":
+            flash('You did not choose a category!', category='error')
             error = True
-        elif len(item) < 2:
+        if len(item) < 2:
             flash('Item name must be > 2 char.', category='error')
             error = True
         try:
             price = float(price)
-        except:
+            if price < 0:
+                flash("You cannot enter a negative price.", category='error')
+                error = True
+        except ValueError:
             flash("Invalid price format. Please enter a numeric value only!", category='error')
-            error = True
-        if float(price) < 0:
-            flash("You cannot enter a negative price.", category='error')
             error = True
         
         if not error:
             entry = Transaction(date=date, category=category, item=item, price=price, user_id=current_user.id)
             db.session.add(entry)
             db.session.commit()
-    return render_template('add_item.html', user=current_user)
+    return render_template('add_item.html', user=current_user, categories=constant.ACCEPTED_CATEGORIES)
 
