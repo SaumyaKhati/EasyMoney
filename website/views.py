@@ -14,6 +14,11 @@ def home():
     transactions = db.session.query(Transaction).filter_by(user_id=current_user.id).order_by(desc(Transaction.date))
     return render_template("home.html", user=current_user, transactions=transactions)
 
+@views.route('/portfolio')
+@login_required
+def portfolio():
+    return render_template('portfolio.html', user=current_user)
+
 @views.route('/add', methods=['GET', 'POST'])
 @login_required
 def add_item():

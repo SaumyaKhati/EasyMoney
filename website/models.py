@@ -17,3 +17,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     username = db.Column(db.String(150), unique=True)
     transactions = db.relationship('Transaction')
+    portfolio = db.relationship('Portfolio')
+
+class Portfolio(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    monthly_income = db.Column(db.Float, default=0.0)
+    savings_percent = db.Column(db.Float, default=0.0)
+    subscription_total = db.Column(db.Float, default=0.0)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
