@@ -46,7 +46,7 @@ def add_item():
         
         if not error:
             flash('Transaction added!', category='success')
-            entry = Transaction(date=date, category=category, item=item, price=(price * 1.00), user_id=current_user.id)
+            entry = Transaction(date=date, category=category, item=item, price=price, user_id=current_user.id)
             db.session.add(entry)
             db.session.commit()
 
