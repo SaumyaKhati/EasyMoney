@@ -17,9 +17,14 @@ def home():
     portfolio = db.session.query(Portfolio).filter_by(user_id=current_user.id).first()
     subs_list = db.session.query(Transaction).\
         filter_by(user_id=current_user.id, category="Subscriptions")
+    subscriptions = sum([x.price for x in subs_list])
+    total_transactions = round(sum([x.price for x in transactions]), 2)
+    budget_left = round(portfolio.monthly_income - subscriptions - total_transactions, 2)
+    savings = round((portfolio.savings_percent / 100) * portfolio.monthly_income, 2)
+
     return render_template("home.html", user=current_user, transactions=transactions, 
-        total_transactions=sum([x.price for x in transactions]), 
-        monthly_income=portfolio.monthly_income, subscriptions=sum([x.price for x in subs_list]))
+        total_transactions= total_transactions, subscriptions=subscriptions,
+        budget_left=budget_left, savings=savings)
 
 @views.route('/portfolio')
 @login_required
@@ -29,11 +34,11 @@ def portfolio():
     savings_percent = float(query.savings_percent)
     subscriptions = db.session.query(Transaction).\
         filter_by(user_id=current_user.id, category="Subscriptions")
-    subscription_total = sum([x.price for x in subscriptions])
+    subscription_total = round(sum([x.price for x in subscriptions]), 2)
     
     return render_template('portfolio.html', user=current_user, 
-        monthly_income=monthly_income, 
-        savings_percent=savings_percent,
+        monthly_income=round(monthly_income, 2), 
+        savings_percent=round(savings_percent, 2),
         subscription_total= subscription_total, 
         subscriptions=subscriptions)
 

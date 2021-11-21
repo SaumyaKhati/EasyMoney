@@ -2,7 +2,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Transactions</h1>
+    <h1 class="text-center">This Month's Transactions</h1>
     <table class="table table-bordered">
         <thead>
             <tr class="table-info">
@@ -30,7 +30,7 @@
         <thead>
             <tr class="table-warning">
                 <th scope="col">General Category</th>
-                <th scope="col">Progress</th>
+                <th scope="col">Value (CAD)</th>
             </tr>
         </thead>
         <tbody>
@@ -40,13 +40,12 @@
                 </tr>
                 <tr>
                     <td>Spending Budget Left</td>
-                    <td>{{ monthly_income - total_transactions }}</td>
+                    <td>{{ budget_left }}</td>
                 </tr>
                 <tr>
-                    <td>Spending Budget Left</td>
-                    <td>{{ monthly_income - total_transactions }}</td>
+                    <td>Monthly Savings</td>
+                    <td>{{ savings }}</td>
                 </tr>
-                
         </tbody>
     </table>
 {% endblock %}
