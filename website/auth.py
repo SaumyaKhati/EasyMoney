@@ -59,6 +59,7 @@ def register():
             # Add user + user's default portfolio to database.
             new_user = User(email=email, username=username, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
+            db.session.commit()
             id = db.session.query(User).filter_by(email=email).first().id
             new_portfolio = Portfolio(monthly_income=0.0, savings_percent=0.0, user_id=id)
             db.session.add(new_portfolio)
