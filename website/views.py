@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
+from . import db
+import datetime
 
 views = Blueprint('views', __name__)
 
@@ -17,7 +19,11 @@ def add_item():
         category = request.form.get('category')
         item = request.form.get('item')
         price = request.form.get('price')
+    # Validate the date. 
+    try:
+        datetime.datetime.strptime(date, "%Y-%m-%d")
+    except:
+        flash('Invalid date format!', category='error')
 
-        
     return render_template('add_item.html', user=current_user)
 
