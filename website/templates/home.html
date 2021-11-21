@@ -15,7 +15,7 @@
         <tbody>
             {% for transaction in transactions %}
                 <tr>
-                    <th scope="row">{{ transaction.date }}</td>
+                    <th scope="row">{{ transaction.date }}</th>
                     <td>{{ transaction.category }}</td>
                     <td>{{ transaction.item }}</td>
                     <td>{{ transaction.price * 1.0 }}</td>
@@ -36,15 +36,15 @@
         <tbody>
                 <tr>
                     <td>Total Spending (Transactions + Subscriptions)</td>
-                    <td>{{ total_transactions + subscriptions}}</td>
-                </tr>
-                <tr>
-                    <td>Spending Budget Left</td>
-                    <td>{{ budget_left }}</td>
+                    <td>{{ total_spending }}</td>
                 </tr>
                 <tr>
                     <td>Monthly Savings</td>
                     <td>{{ savings }}</td>
+                </tr>
+                <tr class="table-danger">
+                    <td>Spending Budget Left</td>
+                    <td>{{ budget_left }}</td>
                 </tr>
         </tbody>
     </table>

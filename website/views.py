@@ -21,10 +21,10 @@ def home():
     total_transactions = round(sum([x.price for x in transactions]), 2)
     budget_left = round(portfolio.monthly_income - subscriptions - total_transactions, 2)
     savings = round((portfolio.savings_percent / 100) * portfolio.monthly_income, 2)
+    total_spending = round(total_transactions + subscriptions, 2)
 
     return render_template("home.html", user=current_user, transactions=transactions, 
-        total_transactions= total_transactions, subscriptions=subscriptions,
-        budget_left=budget_left, savings=savings)
+        total_spending=total_spending,budget_left=budget_left, savings=savings)
 
 @views.route('/portfolio')
 @login_required
@@ -111,7 +111,7 @@ def add_item():
 
         if not error:
             flash('Transaction added!', category='success')
-            entry = Transaction(date=date, category=category, item=item, price=price, user_id=current_user.id)
+            entry = Transaction(date=date, category=category, item=item, price=round(price, 2), user_id=current_user.id)
             db.session.add(entry)
             db.session.commit()
 
