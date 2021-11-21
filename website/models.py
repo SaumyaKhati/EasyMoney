@@ -7,7 +7,7 @@ class Transaction(db.Model):
     date = db.Column(db.String(10))
     category = db.Column(db.String(150))
     item = db.Column(db.String(150))
-    price = db.Column(db.Integer)
+    price = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
 
