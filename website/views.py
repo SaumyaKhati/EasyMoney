@@ -13,8 +13,13 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required
 def home():
-    transactions = db.session.query(Transaction).filter_by(user_id=current_user.id).order_by(desc(Transaction.date))
-    return render_template("home.html", user=current_user, transactions=transactions)
+    transactions = db.session.query(Transaction).filter_by(user_id=current_user.id).filter(Transaction.category!='Subscriptions').order_by(desc(Transaction.date))
+    portfolio = db.session.query(Portfolio).filter_by(user_id=current_user.id).first()
+    subs_list = db.session.query(Transaction).\
+        filter_by(user_id=current_user.id, category="Subscriptions")
+    return render_template("home.html", user=current_user, transactions=transactions, 
+        total_transactions=sum([x.price for x in transactions]), 
+        monthly_income=portfolio.monthly_income, subscriptions=sum([x.price for x in subs_list]))
 
 @views.route('/portfolio')
 @login_required
@@ -22,12 +27,15 @@ def portfolio():
     query = db.session.query(Portfolio).filter_by(user_id=current_user.id).first()
     monthly_income = float(query.monthly_income)
     savings_percent = float(query.savings_percent)
-    subscription_total = float(query.subscription_total)
+    subscriptions = db.session.query(Transaction).\
+        filter_by(user_id=current_user.id, category="Subscriptions")
+    subscription_total = sum([x.price for x in subscriptions])
     
     return render_template('portfolio.html', user=current_user, 
         monthly_income=monthly_income, 
         savings_percent=savings_percent,
-        subscription_total=subscription_total)
+        subscription_total= subscription_total, 
+        subscriptions=subscriptions)
 
 @views.route('/portfolio/update', methods=['GET', 'POST'])
 @login_required
@@ -35,19 +43,16 @@ def update():
     if request.method == 'POST':
         monthly_income = request.form.get('monthly_income')
         savings_percent = request.form.get('savings_percent')
-        subscription_total = request.form.get('subscription_total')
         update_income = True if (monthly_income != '') else False
         update_savings = True if (savings_percent != '') else False
-        update_subs = True if (subscription_total != '') else False
 
         # Validate input.
         try:
             monthly_income = float(monthly_income) if update_income else 0
             savings_percent = float(savings_percent) if update_savings else 0
-            subscription_total = float(subscription_total) if update_subs else 0
 
             # Can't have negative income, costs or saving %
-            if monthly_income < 0 or savings_percent < 0 or subscription_total < 0:
+            if monthly_income < 0 or savings_percent < 0:
                 flash('Please enter non-negative numeric values!', category='error')
             else:
                 flash('Portfolio successfully updated!', category='success')
@@ -60,8 +65,6 @@ def update():
                     user_portfolio.update({'monthly_income':monthly_income})
                 if update_savings:
                     user_portfolio.update({'savings_percent':savings_percent})
-                if update_subs:
-                    user_portfolio.update({'subscription_total':subscription_total})
                 db.session.commit()
                 return redirect(url_for('views.portfolio'))
             
@@ -100,7 +103,7 @@ def add_item():
         except ValueError:
             flash("Invalid price format. Please enter a numeric value only!", category='error')
             error = True
-        
+
         if not error:
             flash('Transaction added!', category='success')
             entry = Transaction(date=date, category=category, item=item, price=price, user_id=current_user.id)

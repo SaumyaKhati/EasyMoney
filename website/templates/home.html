@@ -23,4 +23,30 @@
             {% endfor %}
         </tbody>
     </table>
+    <br />
+
+    <h2 class="text-center">How are you doing so far?</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-warning">
+                <th scope="col">General Category</th>
+                <th scope="col">Progress</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>Total Spending (Transactions + Subscriptions)</td>
+                    <td>{{ total_transactions + subscriptions}}</td>
+                </tr>
+                <tr>
+                    <td>Spending Budget Left</td>
+                    <td>{{ monthly_income - total_transactions }}</td>
+                </tr>
+                <tr>
+                    <td>Spending Budget Left</td>
+                    <td>{{ monthly_income - total_transactions }}</td>
+                </tr>
+                
+        </tbody>
+    </table>
 {% endblock %}

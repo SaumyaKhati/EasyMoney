@@ -19,10 +19,22 @@
                 <td>Savings Percentage</td>
                 <td>{{ savings_percent }}</td>
             </tr>
-            <tr>
-                <td>Total Subscriptions</td>
-                <td>{{ subscription_total }}</td>
-            </tr>
+            {% if subscription_total != 0%}
+                <tr class="table-warning">
+                    <th scope="col">Subscriptions</th>
+                    <th scope="col">Cost</th>
+                </tr>
+                {% for subs in subscriptions %}
+                    <tr>
+                        <td>{{ subs.item }}</td>
+                        <td>{{ subs.price }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="table-danger">
+                    <td>Total Subscriptions</td>
+                    <td>{{ subscription_total }}</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
     <br />
